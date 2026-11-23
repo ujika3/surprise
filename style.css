@@ -1,0 +1,137 @@
+/* ページ全体 */
+body {
+  background-color: #fffafc;
+  background-image: radial-gradient(#e8dce5 1px, transparent 1px);
+  background-size: 10px 10px;
+  color: #554b55;
+  font-family: sans-serif;
+  margin: 30px;
+}
+/* 見出し */
+h1 {
+  text-align: center;
+  letter-spacing: 3px;
+  color: #b47a9b;
+  padding: 15px;
+  border: 3px double #c9a6bb;
+  background-color: #ffffff;
+}
+header p {
+  text-align: center;
+}
+/* リンク */
+a {
+  color: #9b729d;
+}
+
+a:hover {
+  color: #d18aaf;
+}
+/* メインコンテンツ */
+main {
+  max-width: 700px;
+  margin: 40px auto;
+}
+
+/* 各セクション */
+section {
+  margin-bottom: 40px;
+}
+
+/* ページ上部 */
+header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* ページ下部 */
+footer {
+  text-align: center;
+  margin-top: 60px;
+}
+/* 大見出し */
+h1 {
+  text-align: center;
+  letter-spacing: 3px;
+}
+
+/* 各セクションの見出し */
+h2 {
+  color: #b47a9b;
+  font-size: 18px;
+  border-bottom: 1px dotted #c9a6bb;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+/* セクション内の文章 */
+section p {
+  line-height: 1.8;
+}
+/* セクションの装飾 */
+section {
+  background-color: #ffffff;
+  border: 1px solid #c9a6bb;
+  border-radius: 0;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+/* リンクの装飾 */
+a {
+  text-decoration: underline;
+}
+
+/* リンクにマウスを乗せたとき */
+a:hover {
+  text-decoration: none;
+}
+
+hr {
+  border: none;
+  border-top: 1px dotted #c9a6bb;
+  margin: 30px 0;
+}
+/* メニュー */
+nav {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* メニューのリンク */
+nav a {
+  margin: 0 10px;
+}
+
+/* BBSの投稿デザイン */
+.bbs-post {
+  background-color: #fff;
+  border: 1px solid #d8c9d8;
+  padding: 12px;
+  margin: 15px 0;
+}
+
+/* 投稿番号・日時 */
+.bbs-post p:nth-child(1),
+.bbs-post p:nth-child(2) {
+  font-size: 0.8em;
+  color: #888;
+  margin: 3px 0;
+}
+
+/* 投稿者名 */
+.bbs-post p:nth-child(3) {
+  font-weight: bold;
+  color: #8b6b91;
+  margin: 8px 0;
+}
+
+/* メッセージ */
+.bbs-post p:nth-child(4) {
+  margin: 8px 0;
+  white-space: pre-wrap;
+}
+.bbs-post p:nth-child(1) {
+  border-bottom: 1px dotted #d8c9d8;
+  padding-bottom: 5px;
+}
