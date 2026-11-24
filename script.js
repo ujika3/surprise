@@ -56,18 +56,29 @@ postElement.classList.add("bbs-post");
   const date = new Date(post.created_at);
   const formattedDate = date.toLocaleString("ja-JP");
 
-  postElement.innerHTML = `
-    <p>No.${data.length - index}</p>
-    <p>${formattedDate}</p>
-    <p>${post.name}</p>
-    <p>${post.content}</p>
-    <hr>
-  `;
+ postElement.innerHTML = `
+  <p>No.${data.length - index}</p>
+  <p>${formattedDate}</p>
+  <p>${post.name}</p>
+  <p>${post.content}</p>
+ <button class="reply-button">返信する</button>
+  <hr>
+`;
 
     postsArea.appendChild(postElement);
   });
 }
 
+
 // ページを開いたときに投稿を読み込む
 form.reset();
 loadPosts();
+
+   
+// 返信ボタンの動作
+document.addEventListener("click", function(event) {
+  if (event.target.classList.contains("reply-button")) {
+   alert("クリックを検知したよ！");
+  }
+
+});
