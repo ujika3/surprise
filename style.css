@@ -1,9 +1,8 @@
 /* ページ全体 */
 body {
   background-color: #fffafc;
-  background-image: radial-gradient(#e8dce5 1px, transparent 1px);
-  background-size: 10px 10px;
-  color: #554b55;
+ 
+  color: #808080;
   font-family: sans-serif;
   margin: 30px;
 }
@@ -12,9 +11,7 @@ h1 {
   text-align: center;
   letter-spacing: 3px;
   color: #b47a9b;
-  padding: 15px;
-  border: 3px double #c9a6bb;
-  background-color: #ffffff;
+  
 }
 header p {
   text-align: center;
