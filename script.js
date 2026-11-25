@@ -1,134 +1,105 @@
-/* ページ全体 */
-body {
-  background-color: #fffafc;
- 
-  color: #808080;
-  font-family: sans-serif;
-  margin: 30px;
-}
-/* 見出し */
-h1 {
-  text-align: center;
-  letter-spacing: 3px;
-  color: #b47a9b;
-  
-}
-header p {
-  text-align: center;
-}
-/* リンク */
-a {
-  color: #9b729d;
+
+// Supabaseとの接続
+const SUPABASE_URL = "https://asbpcgfpnhpdrldlhcqv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_WAcDDQDVnMt3hlhqNBIM5g_ErXuqRs0";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+// 投稿フォーム
+const form = document.querySelector("form");
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const name = form.querySelector('[name="name"]').value;
+  const message = form.querySelector('[name="message"]').value;
+
+  const { error } = await supabaseClient
+    .from("posts")
+    .insert([
+      {
+        name: name,
+        content: message
+      }
+    ]);
+
+  if (error) {
+    alert("投稿できませんでした");
+    console.error(error);
+  } else {
+    alert("投稿できました！");
+    form.reset();
+  }
+});
+// 保存された投稿を読み込む
+async function loadPosts() {
+  const { data, error } = await supabaseClient
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const postsArea = document.getElementById("posts");
+
+  postsArea.innerHTML = "";
+
+ data.forEach(function(post, index) {
+  const postElement = document.createElement("div");
+postElement.classList.add("bbs-post");
+
+  const date = new Date(post.created_at);
+  const formattedDate = date.toLocaleString("ja-JP");
+
+ postElement.innerHTML = `
+  <p>No.${data.length - index}</p>
+  <p>${formattedDate}</p>
+  <p>${post.name}</p>
+  <p>${post.content}</p>
+ <button class="reply-button">返信する</button>
+  <hr>
+`;
+
+    postsArea.appendChild(postElement);
+  });
 }
 
-a:hover {
-  color: #d18aaf;
-}
-/* メインコンテンツ */
-main {
-  max-width: 700px;
-  margin: 40px auto;
-}
 
-/* 各セクション */
-section {
-  margin-bottom: 40px;
-}
+// ページを開いたときに投稿を読み込む
+form.reset();
+loadPosts();
 
-/* ページ上部 */
-header {
-  text-align: center;
-  margin-bottom: 50px;
-}
+   
+// 返信ボタンの動作
+document.addEventListener("click", function(event) {
+  const button = event.target.closest(".reply-button");
 
-/* ページ下部 */
-footer {
-  text-align: center;
-  margin-top: 60px;
-}
-/* 大見出し */
-h1 {
-  text-align: center;
-  letter-spacing: 3px;
-}
+  if (!button) return;
 
-/* 各セクションの見出し */
-h2 {
-  color: #b47a9b;
-  font-size: 18px;
-  border-bottom: 1px dotted #c9a6bb;
-  padding-bottom: 8px;
-  margin-bottom: 15px;
-}
+  const postElement = button.closest(".bbs-post");
 
-/* セクション内の文章 */
-section p {
-  line-height: 1.8;
-}
-/* セクションの装飾 */
-section {
-  background-color: #ffffff;
-  border: 1px solid #c9a6bb;
-  border-radius: 0;
-  padding: 20px;
-  margin-bottom: 30px;
-}
+  const existingForm = postElement.querySelector(".reply-form");
 
-/* リンクの装飾 */
-a {
-  text-decoration: underline;
-}
+  if (existingForm) {
+    existingForm.remove();
+    return;
+  }
 
-/* リンクにマウスを乗せたとき */
-a:hover {
-  text-decoration: none;
-}
+  const replyForm = document.createElement("div");
+  replyForm.classList.add("reply-form");
 
-hr {
-  border: none;
-  border-top: 1px dotted #c9a6bb;
-  margin: 30px 0;
-}
-/* メニュー */
-nav {
-  text-align: center;
-  margin: 20px 0;
-}
+  replyForm.innerHTML = `
+    <p>▼ 返信を書く</p>
+    <p>名前：</p>
+    <input type="text" placeholder="名前">
+    <p>メッセージ：</p>
+    <textarea rows="4" placeholder="返信メッセージ"></textarea>
+  `;
 
-/* メニューのリンク */
-nav a {
-  margin: 0 10px;
-}
-
-/* BBSの投稿デザイン */
-.bbs-post {
-  background-color: #fff;
-  border: 1px solid #d8c9d8;
-  padding: 12px;
-  margin: 15px 0;
-}
-
-/* 投稿番号・日時 */
-.bbs-post p:nth-child(1),
-.bbs-post p:nth-child(2) {
-  font-size: 0.8em;
-  color: #888;
-  margin: 3px 0;
-}
-
-/* 投稿者名 */
-.bbs-post p:nth-child(3) {
-  font-weight: bold;
-  color: #8b6b91;
-  margin: 8px 0;
-}
-
-/* メッセージ */
-.bbs-post p:nth-child(4) {
-  margin: 8px 0;
-  white-space: pre-wrap;
-}
-.bbs-post p:nth-child(1) {
-  border-bottom: 1px dotted #d8c9d8;
-  padding-bottom: 5px;
-}
+  postElement.appendChild(replyForm);
+});
