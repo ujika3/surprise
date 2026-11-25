@@ -51,6 +51,7 @@ async function loadPosts() {
 
  data.forEach(function(post, index) {
   const postElement = document.createElement("div");
+  postElement.dataset.postId = post.id;
 postElement.classList.add("bbs-post");
 
   const date = new Date(post.created_at);
@@ -92,14 +93,41 @@ document.addEventListener("click", function(event) {
 
   const replyForm = document.createElement("div");
   replyForm.classList.add("reply-form");
+  replyForm.dataset.postId = postElement.dataset.postId;
 
   replyForm.innerHTML = `
-    <p>▼ 返信を書く</p>
-    <p>名前：</p>
-    <input type="text" placeholder="名前">
-    <p>メッセージ：</p>
-    <textarea rows="4" placeholder="返信メッセージ"></textarea>
-  `;
+  <p>▼ 返信を書く</p>
+  <p>名前：</p>
+  <input type="text" class="reply-name" placeholder="名前">
+  <p>メッセージ：</p>
+  <textarea class="reply-content" rows="4" placeholder="返信メッセージ"></textarea>
+  <p><button class="reply-submit">返信を投稿</button></p>
+`;
 
   postElement.appendChild(replyForm);
+    const submitButton = replyForm.querySelector(".reply-submit");
+
+  submitButton.addEventListener("click", async function() {
+    const name = replyForm.querySelector(".reply-name").value;
+    const content = replyForm.querySelector(".reply-content").value;
+    const postId = replyForm.dataset.postId;
+
+    const { error } = await supabaseClient
+      .from("replies")
+      .insert([
+        {
+          post_id: postId,
+          name: name,
+          content: content
+        }
+      ]);
+
+    if (error) {
+      alert("返信できませんでした");
+      console.error(error);
+    } else {
+      alert("返信できました！");
+      replyForm.remove();
+    }
+  });
 });
