@@ -49,11 +49,30 @@ async function loadPosts() {
 
   postsArea.innerHTML = "";
 
- data.forEach(function(post, index) {
+ for (let index = 0; index < data.length; index++) {
+  const post = data[index];
   const postElement = document.createElement("div");
   postElement.dataset.postId = post.id;
 postElement.classList.add("bbs-post");
 
+const repliesArea = document.createElement("div");
+repliesArea.classList.add("replies-area");
+const { data: replies } = await supabaseClient
+  .from("replies")
+  .select("*")
+  .eq("post_id", post.id)
+  .order("created_at", { ascending: true });
+  replies.forEach(function(reply) {
+  const replyElement = document.createElement("div");
+  replyElement.classList.add("bbs-reply");
+
+  replyElement.innerHTML = `
+    <p>返信：${reply.name}</p>
+    <p>${reply.content}</p>
+  `;
+
+  repliesArea.appendChild(replyElement);
+});
   const date = new Date(post.created_at);
   const formattedDate = date.toLocaleString("ja-JP");
 
@@ -66,8 +85,9 @@ postElement.classList.add("bbs-post");
   <hr>
 `;
 
+postElement.appendChild(repliesArea);
     postsArea.appendChild(postElement);
-  });
+  }
 }
 
 
